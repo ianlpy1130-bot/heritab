@@ -1,0 +1,57 @@
+{
+  "manifest_version": 3,
+  "name": "HeriTab - Monuments and Nature Wallpapers Around the World",
+  "version": "1.0.0",
+  "description": "A UNESCO World Heritage Site on every new tab.",
+  "permissions": [
+    "offscreen",
+    "alarms",
+    "search"
+  ],
+  "host_permissions": [
+    "https://images.pexels.com/*",
+    "https://images.unsplash.com/*",
+    "https://upload.wikimedia.org/*",
+    "https://commons.wikimedia.org/*",
+    "https://flagcdn.com/*",
+    "https://fonts.googleapis.com/*",
+    "https://fonts.gstatic.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "offscreen.html",
+        "offscreen.js",
+        "newtab.html",
+        "data/sites.json",
+        "data/sites-images-v1.js",
+        "assets/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "icons": {
+    "16": "assets/icons/Icon16.png",
+    "32": "assets/icons/Icon32.png",
+    "48": "assets/icons/Icon48.png",
+    "128": "assets/icons/Icon128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "assets/icons/Icon16.png",
+      "32": "assets/icons/Icon32.png",
+      "48": "assets/icons/Icon48.png",
+      "128": "assets/icons/Icon128.png"
+    },
+    "default_title": "HeriTab"
+  }
+}

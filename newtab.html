@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HeriTab</title>
+    <link rel="preload" href="./assets/fonts/LeagueSpartan.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./newtab.css" />
+    <link rel="preconnect" href="https://flagcdn.com" crossorigin>
+    <link rel="preconnect" href="https://pexels.com" crossorigin>
+    <link rel="preconnect" href="https://commons.wikimedia.org/" crossorigin>
+  </head>
+  <body>
+    <img
+      id="heroImage"
+      alt=""
+      fetchpriority="high"
+      loading="eager"
+      decoding="sync"
+      draggable="false"
+    />
+    <img
+      id="heroImageNext"
+      alt=""
+      decoding="async"
+      draggable="false"
+      aria-hidden="true"
+    />
+    <div class="overlay"></div>
+    <script>
+      // Injects a preload link for the cached image URL so Chrome starts
+      // fetching it at max priority before the JS module parses.
+      (function () {
+        try {
+          var imageUrl = localStorage.getItem("unesco-next-image-url");
+          if (imageUrl) {
+            var link = document.createElement("link");
+            link.rel = "prefetch";
+            link.as = "image";
+            link.href = imageUrl;
+            document.head.appendChild(link);
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <main class="page">
+      <div id="countryFlag" class="country-flag" hidden></div>
+
+      <section class="center-ui">
+        <div id="clock" class="clock">00:00</div>
+
+        <form id="searchForm" class="search">
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Search the web..."
+            autocomplete="off"
+          />
+          <button type="submit" aria-label="Search">⌕</button>
+        </form>
+
+        <div id="imageCredit" class="image-credit" hidden></div>
+      </section>
+
+      <section class="site-info">
+        <div class="title-row">
+          <a
+            id="siteNameLink"
+            class="site-link"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <h1 id="siteName">Loading...</h1>
+          </a>
+
+          <button
+            id="speakBtn"
+            class="speak-btn"
+            aria-label="Speak native name"
+            title="Speak native name"
+            type="button"
+            hidden
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 4L9.5 8H5v8h4.5L14 20V4z"></path>
+              <path d="M16.5 9.5a4 4 0 0 1 0 5"></path>
+              <path d="M18.8 7a7.5 7.5 0 0 1 0 10"></path>
+            </svg>
+          </button>
+
+          <button
+            id="translateBtn"
+            class="translate-btn"
+            type="button"
+            aria-label="Change language"
+            title="Change language"
+            hidden
+          >
+            EN
+          </button>
+          <a id="searchSiteBtn" class="search-site-btn" href="#" target="_blank" rel="noopener noreferrer" aria-label="Search on Google" title="Search on Google" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
+          </a>
+        </div>
+
+        <p id="siteDescription" class="description">Loading description...</p>
+      </section>
+
+      <button id="customizeBtn" class="customize-btn" type="button">
+        Customize
+      </button>
+
+      <aside id="customizePanel" class="customize-panel" hidden>
+        <div class="customize-header">
+          <div>
+            <h2>Countries</h2>
+            <p class="customize-help">
+              Choose which countries can appear in random rotation.
+            </p>
+          </div>
+          <button
+            id="closeCustomizeBtn"
+            type="button"
+            class="customize-close"
+            aria-label="Close customize panel"
+          >
+            ×
+          </button>
+        </div>
+
+        <div class="customize-actions">
+          <button id="selectAllCountriesBtn" type="button">Select all</button>
+          <button id="clearCountriesBtn" type="button">Clear all</button>
+          <button id="openSitePickerBtn" type="button">Select Sites</button>
+          <button id="applyCountriesBtn" class="apply-btn" type="button">
+            Apply
+          </button>
+          <button
+            id="openSettingsBtn"
+            class="settings-btn"
+            type="button"
+            aria-label="Open settings"
+            title="Settings"
+          >
+            ⚙
+          </button>
+        </div>
+
+        <div id="countryChecklist" class="country-checklist"></div>
+      </aside>
+
+      <aside
+        id="settingsPanel"
+        class="customize-panel settings-panel"
+        hidden
+      >
+        <div class="customize-header">
+          <button
+            id="closeSettingsBtn"
+            type="button"
+            class="settings-back-btn"
+            aria-label="Back to customize"
+          >
+            ←
+          </button>
+          <h2>Settings</h2>
+          <button id="settingsApplyBtn" type="button" class="settings-apply-btn">Apply</button>
+        </div>
+
+        <div class="settings-rows">
+          <label class="settings-row" for="settingsInsaneImages">
+            <span class="settings-row-text">Handpicked insanely good images (wallpaper)</span>
+            <input id="settingsInsaneImages" type="checkbox" class="settings-checkbox" />
+          </label>
+          <label class="settings-row" for="settingsGoodImages">
+            <span class="settings-row-text">Include only sites with good images</span>
+            <input id="settingsGoodImages" type="checkbox" class="settings-checkbox" />
+          </label>
+          <label class="settings-row" for="settingsMultiCountry">
+            <span class="settings-row-text">Include sites spanning multiple countries</span>
+            <input id="settingsMultiCountry" type="checkbox" class="settings-checkbox" />
+          </label>
+        </div>
+      </aside>
+
+      <aside
+        id="sitePickerPanel"
+        class="customize-panel site-picker-panel"
+        hidden
+      >
+        <div class="customize-header">
+          <div>
+            <h2>Select Sites</h2>
+            <p class="customize-help">
+              Choose specific sites from the countries currently selected.
+            </p>
+          </div>
+          <button
+            id="closeSitePickerBtn"
+            type="button"
+            class="customize-close"
+            aria-label="Close site picker"
+          >
+          </button>
+        </div>
+
+        <div id="siteCountryGroups" class="site-country-groups"></div>
+
+        <div class="customize-actions">
+          <button id="selectAllSitesBtn" type="button">Select all</button>
+          <button id="clearSitesBtn" type="button">Clear all</button>
+          <button id="applySitesBtn" class="apply-btn" type="button">
+            Apply
+          </button>
+        </div>
+      </aside>
+
+      <div id="applyToast" class="apply-toast" hidden>Changes Applied</div>
+    </main>
+
+    <script type="module" src="./newtab.js"></script>
+  </body>
+</html>
